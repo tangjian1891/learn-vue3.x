@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>特殊情况，怀疑BUG，以后回头看看</title>
+    <link
+      href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="app" class="m-4 p-4 border border-success">
+      <div>{{message}}</div>
+      <p v-show="flag">你好</p>
+      <hello-world></hello-world>
+      <button type="button" @click="flag=!flag" class="m-3 btn btn-success">Right</button>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.0.0-rc.10/dist/vue.global.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.0.0-alpha1/js/bootstrap.min.js"></script>
+
+    <script>
+      const vm = Vue.createApp({
+        data() {
+          return {
+            message: "你好,Vue3",
+            flag: true,
+          };
+        },
+      });
+
+      // 全局注册。 和2.x项目。避免了直接往原型上挂载。 需要实例化
+      vm.component("hello-world", {
+        props: ["myname"],
+        template: `<div class="border p-3  border-warning">这是一个组件啊</div>`,
+      });
+      vm.mount("#app");
+      console.log(vm); //可以正常打印
+      console.log(vm.$data); //在挂载全局组件后，这里实效  
+      console.log(vm.message); //在挂载全局组件后，这里实效
+    </script>
+  </body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vue实例对象</title>
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.0.0-alpha1/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+  <body>
+    <div id="app" class="m-3 p-3 border border-success">{{message}}</div>
+
+    <!-- <script src="https://unpkg.com/vue@next"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.0.0-rc.10/dist/vue.global.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.0.0-alpha1/js/bootstrap.min.js"></script>
+
+    <script>
+      const vm = Vue.createApp({
+        data() {
+          return {
+            message: "你好,Vue3",
+            flag:false
+          };
+        },
+      }).mount("#app");
+      // 打印实例查看
+      console.log(vm) //感觉整个vm都被proxy了
+      console.log(vm.message); //遵循vue2的数据代理
+      console.log(vm.$data); //默认开放一个$data
+    </script>
+  </body>
+</html>
