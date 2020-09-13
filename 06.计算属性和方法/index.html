@@ -11,7 +11,9 @@
   </head>
   <body>
     <div id="app" class="m-3 p-3 border border-success">
-      <div>{{message}}</div>
+      <p>计算属性:{{count}}</p>
+      <p>当前时间:{{getTime()}}</p>
+      <button @click="updateDom">DOM变动{{num}}</button>
     </div>
 
     <!-- <script src="https://unpkg.com/vue@next"></script> -->
@@ -23,7 +25,26 @@
         data() {
           return {
             message: "你好,Vue3",
+            x: 10,
+            y: 20,
+            num:1,
+            msg:123
           };
+        },
+        computed: {
+          count() {
+            console.log("你好") //计算属性，只要是依赖数据变化，就会执行
+            return this.x + this.y;
+          },
+        },
+        methods: {
+          getTime() {
+            console.log("方法变动了") //只要是程序进行了响应式的侦查渲染，都会触发所有的方法
+            return new Date().getTime();
+          },
+          updateDom(){
+              this.msg=this.msg+1
+          }
         },
       }).mount("#app");
     </script>

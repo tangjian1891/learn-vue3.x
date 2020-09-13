@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>监听器</title>
+    <link
+      href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="app" class="m-3 p-3 border border-success">
+      <div>{{message}}</div>
+      <button @click="message1=message1+'nihao'">点击更改1</button>
+      <button @click="message2=message2+'nihao'">点击更改2</button>
+      <button @click="updateMessage3">点击更改3</button>
+      <button @click="updateMessage4">点击更改4</button>
+    </div>
+
+    <!-- <script src="https://unpkg.com/vue@next"></script> -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.0.0-rc.10/dist/vue.global.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.0.0-alpha1/js/bootstrap.min.js"></script>
+<!-- 总结:
+    可以监听属性。
+        对象形式
+            handler:fn,
+            immediate:Boolean, //立即执行
+            deep:Boolean   //监听对象的
+    
+    可以监听对象:变异方法，重新赋值都是可以被监听到的，如果监听数组的长度变化来判断数组，是不准确的
+-->
+    <script>
+      
+      const vm = Vue.createApp({
+      // const vm = new Vue({
+        data() {
+          return {
+            message: "你好,Vue3",
+            message2: "你好,Vue3",
+            message3: {
+              name: "北京",
+              age: 12,
+              arr: [1, 2, 3, 4],
+            },
+            arr: [1, 2, 3, 4, 56],
+          };
+        },
+        methods: {
+          updateMessage3() {
+            this.message3.name = "修改";
+            // console.log(this.message3)
+          },
+          updateMessage4() {
+            // this.arr[0] = "修改";  //无法被watch监听
+            // this.arr.splice(0, 1, "修改"); //可以被watch
+            this.arr=['1']
+            console.log(this.arr); //也是没问题的
+            // console.log(this.message3)
+          },
+        },
+        watch: {
+          // 1. 普通监听
+          message(newVal, oldVal) {
+            console.log(newVal);
+            console.log(oldVal);
+            // 在监听器中，是可以影响其它属性的。
+          },
+          //2. 立触发,此时oldVal为undefined  handler函数 +immediate属性
+          message2: {
+            handler(newVal, oldVal) {
+              console.log(newVal);
+              console.log(oldVal);
+            },
+            immediate: true,
+          },
+          // 3. 深度监听就没有 oldVal了，注意 。。当然你也可以使用键的形式向下 a.b.c.d 监听单个属性
+          message3: {
+            handler(newVal, oldVal) {
+              console.log(newVal.name + "1");
+              console.log(oldVal.name + "1");
+              console.log(newVal === oldVal);
+            },
+            deep: true,
+          },
+          // 4.数组也是没有问题的，如果只是监听长度，不够准确的
+          arr(newVal, oldVal) {
+            console.log("监听数组没问题啊")
+            console.log(newVal);
+            console.log(oldVal);
+          },
+        },
+      // }).$mount("#app");
+      }).mount("#app");
+    </script>
+  </body>
+</html>

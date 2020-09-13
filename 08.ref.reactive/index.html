@@ -11,7 +11,7 @@
   </head>
   <body>
     <div id="app" class="m-3 p-3 border border-success">
-      <div>{{message}}</div>
+      <div @click="count.name++">{{count.name}}</div>
     </div>
 
     <!-- <script src="https://unpkg.com/vue@next"></script> -->
@@ -20,9 +20,17 @@
 
     <script>
       const vm = Vue.createApp({
-        data() {
+        setup(props, context) {
+          const count = Vue.ref({
+            name: 1,
+          });
+          const count2 = Vue.ref(1231);
+          Vue.watchEffect(()=>{
+            console.log("监听")
+            console.log(count.value.name)
+          })
           return {
-            message: "你好,Vue3",
+            count,
           };
         },
       }).mount("#app");
